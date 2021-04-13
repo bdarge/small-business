@@ -1,0 +1,4 @@
+LOCK TABLES `users` WRITE;
+DELETE FROM `users` WHERE Id = 1;
+UNLOCK TABLES;
+
