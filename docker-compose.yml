@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  sm-db:
+    # container_name: sql-db
+    build:
+      context: sm-db
+      dockerfile: Dockerfile
+    cap_add:
+      - SYS_NICE #
+    # use the old authentication protocol, so I can use the popular mysql nodejs package
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: 'profile'
+      MYSQL_USER: 'docker'
+      MYSQL_PASSWORD: 'password!'
+    ports:
+      - 3308:3306
+    volumes:
+      - data:/var/lib/mysql
+  sm-api:
+    hostname: app
+    restart: unless-stopped
+    depends_on:
+      - sm-db
+    build:
+      context: sm-api
+      dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - type: bind
+        source: ./sm-api
+        target: /home/app
+    working_dir: /home/app
+    environment:
+      PATH_TO_CONFIG: /home/app/config
+    ports:
+      - "8080:1234"
+  ui:
+    depends_on:
+      - sm-db
+    build:
+      context: ./ui
+      dockerfile: docker/Dockerfile
+      target: dev
+    ports:
+      - "4201:4200"
+    volumes:
+      - ./ui:/app
+volumes:
+  data: {}

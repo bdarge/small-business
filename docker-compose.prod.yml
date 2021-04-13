@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  sm-api:
+    build:
+      context: sm-api
+      dockerfile: Dockerfile
+    environment:
+      PORT: "8081"
+    ports:
+      - "8081:1234"
+    command: bash -c "./scripts/production.sh"
+  ui:
+    build:
+      context: ./ui
+      dockerfile: docker/Dockerfile
+      target: prod
+    ports:
+      - "8082:80"

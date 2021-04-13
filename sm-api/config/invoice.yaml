@@ -1,0 +1,4 @@
+ConfigVar: "Dummy Value"
+DSN: "docker:password!@tcp(sm-db)/profile?parseTime=true"
+API_KEY: "key"
+BASE_URL: "http://localhost:8080"
