@@ -19,7 +19,7 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    
+    container: buildkite/puppeteer:latest
     strategy:
       matrix:
         node-version: [15.x]
@@ -36,8 +36,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: sudo apt-get update
-      - run: sudo apt-get install -y libgbm-dev
       - run: npm ci
       - run: npm run test
 
