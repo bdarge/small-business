@@ -1,15 +1,17 @@
 version: "3.9"
 
 services:
-  sm-api:
+  api:
     build:
       context: sm-api
       dockerfile: Dockerfile
+      target: prod
+    volumes:
+      - ./config:/app/config
+      - ./db:/app/db
     environment:
-      PORT: "8081"
-    ports:
-      - "8081:1234"
-    command: bash -c "./scripts/production.sh"
+      GIN_MODE: release
+      PATH_TO_CONFIG: /app/config
   ui:
     build:
       context: ./ui

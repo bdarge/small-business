@@ -1,7 +1,7 @@
-version: "3.9"
+version: "3.7"
 
 services:
-  sm-db:
+  db:
     # container_name: sql-db
     build:
       context: sm-db
@@ -19,11 +19,11 @@ services:
       - 3308:3306
     volumes:
       - data:/var/lib/mysql
-  sm-api:
+  api:
     hostname: app
     restart: unless-stopped
     depends_on:
-      - sm-db
+      - db
     build:
       context: sm-api
       dockerfile: Dockerfile
@@ -36,10 +36,10 @@ services:
     environment:
       PATH_TO_CONFIG: /home/app/config
     ports:
-      - "8080:1234"
+      - "8080:8080"
   ui:
     depends_on:
-      - sm-db
+      - db
     build:
       context: ./ui
       dockerfile: docker/Dockerfile
