@@ -37,7 +37,7 @@ func LoadConfig(configPaths ...string) error {
 	v.SetConfigType("yaml")
 	v.SetEnvPrefix("invoice")
 	v.AutomaticEnv()
-	v.SetDefault("server_port", 1234)
+	v.SetDefault("server_port", 8080)
 
 	for _, path := range configPaths {
 		v.AddConfigPath(path)
@@ -48,7 +48,7 @@ func LoadConfig(configPaths ...string) error {
 
 	Config.DSN = v.Get("DSN").(string)
 	Config.ApiKey = v.Get("API_KEY").(string)
+	Config.ServerPort = v.Get("SERVER_PORT").(int)
 
-	fmt.Println(Config.DSN)
 	return v.Unmarshal(&Config)
 }
