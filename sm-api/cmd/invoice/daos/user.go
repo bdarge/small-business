@@ -3,9 +3,9 @@ package daos
 import (
   "fmt"
   "github.com/bdarge/sm-api/cmd/invoice/config"
-  "github.com/bdarge/sm-api/cmd/invoice/httputil"
+  "github.com/bdarge/sm-api/cmd/invoice/helper"
   "github.com/bdarge/sm-api/cmd/invoice/models"
-  _ "github.com/bdarge/sm-api/cmd/invoice/httputil"
+  _ "github.com/bdarge/sm-api/cmd/invoice/helper"
 )
 
 // UserDAO persists user data in database
@@ -29,7 +29,7 @@ func (dao *UserDAO) Get(id uint) (*models.User, error) {
 }
 
 func (dao *UserDAO) Post(user *models.User) (*models.User, error)  {
-  password, e := httputil.HashPassword(user.Password);
+  password, e := helper.HashPassword(user.Password);
   if e != nil {
     return nil, e
   }

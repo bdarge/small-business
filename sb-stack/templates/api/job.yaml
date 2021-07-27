@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "sb-stack.fullname" . }}-migration-job
+  labels:
+    {{- include "sb-stack.labels" . | nindent 4 }}
+    app: {{ template "sb-stack.name" . }}-migration-job
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      {{- with .Values.api.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "sb-stack.labels" . | nindent 8 }}
+        app: {{ template "sb-stack.name" . }}-api
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "sb-stack.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.migration.image.repository }}:{{ .Values.migration.image.tag | default .Chart.AppVersion }}"
+          args: [ "-path", "/db/migrations", "-database",  "mysql://{{ .Values.db.profile.user}}:{{ .Values.db.cred.MYSQL_USER_PWD }}@tcp(db)/{{ .Values.db.profile.database }}?parseTime=true", "up" ]
+          volumeMounts:
+            - name: migration-path
+              mountPath: "/db"
+      restartPolicy: {{ .Values.migration.job.restartPolicy }}
+      volumes:
+        - name: migration-path
+          hostPath:
+            path: {{ .Values.migration.path }}

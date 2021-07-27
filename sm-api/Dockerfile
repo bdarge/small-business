@@ -1,9 +1,3 @@
-FROM golang:1.16-alpine as dev
-COPY . .
-RUN ["go", "get", "github.com/githubnemo/CompileDaemon"]
-WORKDIR /bin/app
-ENTRYPOINT CompileDaemon -log-prefix=false -build="go build -o ./bin ./cmd/invoice/" -command="./bin"
-
 FROM golang:1.16-alpine as builder
 
 RUN apk add --no-cache git
@@ -18,6 +12,14 @@ RUN go mod download
 COPY . .
 
 RUN go build -o ./out cmd/invoice/main.go
+
+FROM golang:1.16-alpine as dev
+
+WORKDIR /bin/app
+
+RUN ["go", "get", "github.com/githubnemo/CompileDaemon"]
+
+ENTRYPOINT CompileDaemon -log-prefix=false -build="go build -o ./bin ./cmd/invoice/" -command="./bin"
 
 FROM alpine:latest as prod
 

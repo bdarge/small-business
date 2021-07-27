@@ -3,11 +3,11 @@ package authentication
 import (
   "fmt"
   jwt "github.com/appleboy/gin-jwt/v2"
-  "github.com/bdarge/sm-api/cmd/invoice/config"
-  "github.com/bdarge/sm-api/cmd/invoice/httputil"
-  "github.com/bdarge/sm-api/cmd/invoice/models"
   _ "github.com/bdarge/sm-api/cmd/invoice/apis"
-  _ "github.com/bdarge/sm-api/cmd/invoice/httputil"
+  "github.com/bdarge/sm-api/cmd/invoice/config"
+  "github.com/bdarge/sm-api/cmd/invoice/helper"
+  _ "github.com/bdarge/sm-api/cmd/invoice/helper"
+  "github.com/bdarge/sm-api/cmd/invoice/models"
   "github.com/gin-gonic/gin"
   "strconv"
   "time"
@@ -53,7 +53,7 @@ func Middleware(identityKey string) (*jwt.GinJWTMiddleware, error) {
         return nil, jwt.ErrFailedAuthentication
       }
       fmt.Printf("userID %d, email %s", user.ID, user.Email)
-      match := httputil.CheckPasswordHash(password, user.Password)
+      match := helper.CheckPasswordHash(password, user.Password)
 
       fmt.Println(match)
       if !match {
