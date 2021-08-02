@@ -99,6 +99,13 @@ api:
   autoscaling:
     enabled: false
   replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 8080
+    targetPort: 8080
+  baseUrl: "http://localhost:8080"
+  key: "exp"
+  migration: "small-business/db/migrations"
   image:
     repository: nfs.my.home:5000/sm-api-arm64
     pullPolicy: IfNotPresent
@@ -107,7 +114,7 @@ api:
 
 migration:
   image:
-    repository: migrate/migrate
+    repository: nfs.my.home:5000/sm-api-arm64
     pullPolicy: IfNotPresent
     tag: "latest"
   job:
@@ -119,4 +126,7 @@ wait:
     repository: groundnuty/k8s-wait-for
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "1.4"
+    tag: "latest"
+git:
+  username: bdarge
+  TOKEN: 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

@@ -1,7 +1,5 @@
 FROM golang:1.16-alpine as builder
 
-RUN apk add --no-cache git
-
 WORKDIR /tmp/app
 
 COPY go.mod .
@@ -23,7 +21,7 @@ ENTRYPOINT CompileDaemon -log-prefix=false -build="go build -o ./bin ./cmd/invoi
 
 FROM alpine:latest as prod
 
-RUN apk --no-cache add ca-certificates
+RUN apk --no-cache add ca-certificates git
 
 WORKDIR /app
 

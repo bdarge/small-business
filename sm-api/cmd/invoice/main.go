@@ -37,7 +37,7 @@ func main() {
   filename := os.Getenv("PATH_TO_CONFIG")
   // load application configurations
   if err := LoadConfig(filename, "./config"); err != nil {
-    panic(fmt.Errorf("invalid application configuration: %s", err))
+    panic(fmt.Errorf("invalid application configuration: %s. filename: %s", err, filename))
   }
 
   // Creates a router without any middleware by default
@@ -79,6 +79,11 @@ func main() {
     claims := jwt.ExtractClaims(c)
     log.Printf("NoRoute claims: %#v\n", claims)
     c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
+  })
+
+  // health
+  router.GET("/health", func(c *gin.Context) {
+    c.JSON(200, gin.H{"message": "Ok"})
   })
 
   auth := router.Group("/api/v1/auth")
@@ -144,11 +149,13 @@ func main() {
   }
 
   if migrateData {
+    log.Printf("Reuse db connection, database:- %s", Config.Database)
     // reuse db migration connection
     Config.DB, Config.DBErr = gorm.Open(mysql.New(mysql.Config{
       Conn: sqlCon,
     }), &gorm.Config{})
   } else {
+    log.Printf("Open database, %s", Config.Database)
     // open database
     Config.DB, Config.DBErr = gorm.Open(mysql.Open(Config.DSN), &gorm.Config{})
   }

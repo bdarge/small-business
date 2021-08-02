@@ -5,12 +5,12 @@ metadata:
   labels:
     {{- include "sb-stack.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.db.service.type }}
+  type: {{ .Values.api.service.type }}
   ports:
-    - port: {{ .Values.db.service.port }}
+    - port: {{ .Values.api.service.port }}
       protocol: TCP
       name: http
-      targetPort: {{ .Values.db.service.targetPort }}
+      targetPort: {{ .Values.api.service.targetPort }}
   selector:
     app: {{ template "sb-stack.name" . }}-api
     release: {{ $.Release.Name | quote }}

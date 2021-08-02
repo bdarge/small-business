@@ -74,7 +74,7 @@ spec:
                 - bash
                 - "-c"
                 - |
-                  mysql -uroot -p$MYSQL_ROOT_PASSWORD -h 127.0.0.1 -e 'SELECT 1;'
+                - mysql -uroot -p$MYSQL_ROOT_PASSWORD -h 127.0.0.1 -e 'SELECT 1;'
             initialDelaySeconds: 5
             periodSeconds: 2
             timeoutSeconds: 1

@@ -18,8 +18,8 @@ func Migrate()  (*sql.DB, error) {
 	driver, _ := mysql.WithInstance(db, &mysql.Config{})
 
 	m, _ := migrate.NewWithDatabaseInstance(
-		"file://db/migrations",
-		"profile",
+		"file://" + Config.MigrationDir,
+		Config.Database,
 		driver,
 	)
 

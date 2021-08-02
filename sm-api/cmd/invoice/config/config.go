@@ -28,14 +28,18 @@ type appConfig struct {
 	KeyFile string `mapstructure:"key_file"`
 	// base url
 	BaseUrl string `mapstructure:"base_url"`
+	// migration files location
+	MigrationDir string `mapstructure:"migration_dir"`
+	// database
+	Database string `mapstructure:"database"`
 }
 
 // LoadConfig loads config from files
 func LoadConfig(configPaths ...string) error {
 	v := viper.New()
-	v.SetConfigName("invoice")
+	v.SetConfigName("sm")
 	v.SetConfigType("yaml")
-	v.SetEnvPrefix("invoice")
+	v.SetEnvPrefix("sm")
 	v.AutomaticEnv()
 	v.SetDefault("server_port", 8080)
 
@@ -49,6 +53,7 @@ func LoadConfig(configPaths ...string) error {
 	Config.DSN = v.Get("DSN").(string)
 	Config.ApiKey = v.Get("API_KEY").(string)
 	Config.ServerPort = v.Get("SERVER_PORT").(int)
-
+	Config.MigrationDir = v.Get("MIGRATION_DIR").(string)
+	Config.Database = v.Get("DATABASE").(string)
 	return v.Unmarshal(&Config)
 }

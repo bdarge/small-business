@@ -3,8 +3,11 @@ kind: ConfigMap
 metadata:
   name: {{ include "sb-stack.fullname" . }}-config
 data:
-  invoice.yaml: |
-    DSN="{{ .Values.db.profile.user}}:{{ .Values.db.cred.MYSQL_USER_PWD }}@tcp(db)/{{ .Values.db.profile.database }}?parseTime=true"
-    API_KEY="key"
-    BASE_URL="http://localhost:8080"
-    SERVER_PORT=8080
+  sm.yaml: |
+    ---
+    DSN: "{{ .Values.db.profile.user}}:${MYSQL_PASSWORD}@tcp({{ include "sb-stack.fullname" . }}-db-svc:{{ .Values.db.service.port }})/{{ .Values.db.profile.database }}?parseTime=true"
+    API_KEY: {{ .Values.api.key }}
+    BASE_URL: {{ .Values.api.baseUrl }}
+    SERVER_PORT: {{ .Values.api.service.targetPort }}
+    MIGRATION_DIR: {{ .Values.api.migration }}
+    DATABASE: {{ .Values.db.profile.database }}
