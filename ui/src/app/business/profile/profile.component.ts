@@ -14,8 +14,7 @@ export class ProfileComponent implements OnInit {
   form = this.fb.group({
     id: [''],
     businessName: [''],
-    name: ['', [Validators.required]],
-    email: ['', [Validators.email]],
+    username: ['', [Validators.required]],
     street: ['',],
     postalCode: [''],
     hourlyRate: [''],
@@ -26,8 +25,6 @@ export class ProfileComponent implements OnInit {
     vat: ['']
   })
 
-  locked = true
-
   constructor(private fb: FormBuilder,
               private configService: ConfigWebService,
               private notificationService: NotificationService,
@@ -36,12 +33,13 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    const id = this.localStorageSvc.getItem('E-ID')
-    this.configService.getUser(id)
+    const acct = this.localStorageSvc.getItem('USER')
+    this.configService.getUser(acct.userId)
       .subscribe(form => {
-        console.log('profile =>', form)
+        if (form) {
+          form.accountId = form.accountId || acct.id
+        }
         this.form.patchValue(form || {})
-        this.form.disable()
         this.form.valueChanges.pipe(
           debounceTime(1000),
           distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)))
@@ -87,14 +85,5 @@ export class ProfileComponent implements OnInit {
         this.validateAll(control)
       }
     })
-  }
-
-  toggle() {
-    this.locked = !this.locked
-    if (!this.locked) {
-      this.form.enable()
-    } else {
-      this.form.disable()
-    }
   }
 }

@@ -1,9 +1,9 @@
 export interface User {
-  hourlyRate: number;
   id: string;
+  username: string;
+  hourlyRate: number;
+  accountId: string;
   businessName: string;
-  ownerName: string;
-  email: string;
   street: string;
   postalCode: string;
   city: string;

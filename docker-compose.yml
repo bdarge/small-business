@@ -1,14 +1,13 @@
-version: "3.7"
+version: "3.8"
 
 services:
   db:
-    # container_name: sql-db
     build:
-      context: sm-db
+      context: db
       dockerfile: Dockerfile
     image: sm-db
     cap_add:
-      - SYS_NICE #
+      - SYS_NICE
     # use the old authentication protocol, so I can use the popular mysql nodejs package
     command: --default-authentication-plugin=mysql_native_password
     environment:
@@ -17,17 +16,9 @@ services:
       MYSQL_USER: 'docker'
       MYSQL_PASSWORD: 'password!'
     ports:
-      - 3308:3306
+      - "3308:3306"
     volumes:
       - data:/var/lib/mysql
-  migrate:
-    image: migrate/migrate
-    depends_on:
-      - db
-    volumes:
-      - ./sm-api/db:/db
-    # db cred can be hidden in secrets and other places.
-    command: [ "-path", "/db/migrations", "-database",  "mysql://docker:password!@tcp(db)/profile?parseTime=true", "up" ]
   api:
     hostname: app
     restart: unless-stopped
@@ -35,18 +26,33 @@ services:
     depends_on:
       - db
     build:
-      context: sm-api
+      context: api
       dockerfile: Dockerfile
       target: dev
     volumes:
-      - type: bind
-        source: ./sm-api
-        target: /home/app
+      - ./api:/home/app
     working_dir: /home/app
     environment:
       PATH_TO_CONFIG: /home/app/config
     ports:
       - "8080:8080"
+  migrator:
+    image: sm-api
+    depends_on:
+      - db
+    build:
+      context: api
+      dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - ./api:/home/app
+      - ./misc:/misc
+    working_dir: /home/app
+    environment:
+      PATH_TO_CONFIG: /home/app/config
+      MIGRATOR: 'true'
+    command: >
+      sh -c "/misc/wait-for-it.sh 127.0.0.1:3308 -- /app/api"
   ui:
     depends_on:
       - db

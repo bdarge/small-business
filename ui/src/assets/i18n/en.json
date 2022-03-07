@@ -61,6 +61,8 @@
   "business.quoteItem.add.title": "Add Quote Item for",
   "business.quoteItem.edit.title": "Add Quote Item for",
   "business.login.title": "Login",
+  "business.login.user.placeholder": "Enter your email or username",
+  "business.login.user.error": "Email or username is required",
   "business.login.email.placeholder": "Enter your email",
   "business.login.email.error1": "Email is required",
   "business.login.email.error2": "Invalid Email",
@@ -77,8 +79,12 @@
   "business.register.email.error1": "Email is required",
   "business.register.email.error2": "Invalid Email",
   "business.register.password.placeholder": "Enter your password",
+  "business.register.confirmPassword.placeholder": "Confirm password",
   "business.register.password.error": "Password is required",
+  "business.register.password.pattern.error": "Password should be a mix of letters and numbers",
+  "business.register.password.length.error": "Password length should be between 6-25 inclusive",
   "business.register.btn": "Register",
   "business.register.name.placeholder": "Enter your name",
-  "business.register.name.error": "Name is required"
+  "business.register.name.error": "Name is required",
+  "business.register.password.mismatch": "Passwords do not match"
 }

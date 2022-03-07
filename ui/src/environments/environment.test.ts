@@ -21,4 +21,4 @@ export const ENVIRONMENT = {
     cypress: packageJson.devDependencies['cypress'],
     eslint: packageJson.devDependencies['eslint']
   }
-};
+}

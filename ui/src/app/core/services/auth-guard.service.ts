@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
-import {from, Observable} from 'rxjs';
+import {from, Observable, of} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {LocalStorageService} from '../local-storage/local-storage.service';
+import {Auth} from "./auth";
 
 @Injectable({
   providedIn: 'root'
@@ -13,23 +14,24 @@ export class AuthGuardService implements CanActivate {
               private localStorageSvc: LocalStorageService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return from(new Promise<boolean>((resolve, reject) => {
-      const token = this.localStorageSvc.getItem('TOKEN')
-      if (!token) {
-        return this.router.navigate(['/login'])
-      } else {
-        const isExpired = this.tokenExpired(token);
-        if (isExpired) {
-          return this.router.navigate(['/login'])
-        } else {
-          resolve(true)
-        }
+    if (this.isAuthenticated()) {
+      if (state.url.endsWith('login') || state.url.endsWith('register')) {
+        this.router.navigate(['/business'])
+        return of(false)
       }
-    }))
+      return of(true)
+    } else {
+      if (state.url.endsWith('login') || state.url.endsWith('register')) {
+        return of(true)
+      } else {
+        this.router.navigate(['/login'])
+        return of(false)
+      }
+    }
   }
-
-  private tokenExpired(token: string) {
-    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
-    return (Math.floor((new Date).getTime() / 1000)) >= expiry;
+  isAuthenticated() {
+    const token = this.localStorageSvc.getItem('TOKEN')
+    return token && !Auth.hasTokenExpired(token)
   }
 }
+

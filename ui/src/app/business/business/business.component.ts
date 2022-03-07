@@ -1,17 +1,15 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {from, Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {
   routeAnimations,
-  selectSettingsLanguage,
   selectTheme,
-
   LocalStorageService
 } from '../../core/core.module';
 import {actionSettingsChangeLanguage} from '../../core/settings/settings.actions';
 import {State} from '../../core/settings/settings.model';
 import {OverlayContainer} from '@angular/cdk/overlay';
-import {User} from '../../model/user';
+import {Account} from '../../model/account';
 import {Router} from '@angular/router';
 
 @Component({
@@ -31,9 +29,9 @@ export class BusinessComponent implements OnInit {
     ...this.navigation
   ];
 
-  theme$: Observable<string>;
-  isAuthenticated$: Observable<boolean>;
-  user$: Observable<string>;
+  theme$: Observable<string>
+  isAuthenticated$: Observable<boolean>
+  user$: Observable<string>
 
   constructor(
     private router: Router,
@@ -41,31 +39,20 @@ export class BusinessComponent implements OnInit {
     private store: Store<State>,
     private localStorageSvc: LocalStorageService,
   ) {
-    this.theme$ = this.store.pipe(select(selectTheme));
-    this.isAuthenticated$ = from(new Promise<boolean>((resolve) =>{
-      resolve(this.localStorageSvc.getItem('E-ID') ||
-        this.localStorageSvc.getItem('TOKEN'))
-    }));
-    this.user$ = from(new Promise<string>((resolve) => {
-      const user = this.localStorageSvc.getItem('USER') as User;
-      if (user) {
-        resolve(user.ownerName)
-      }
-    }));
+    this.theme$ = this.store.pipe(select(selectTheme))
+    const acct = this.localStorageSvc.getItem('USER') as Account
+    let userName: string = acct?.email
+    this.user$ = of(userName)
+    this.isAuthenticated$ = of(!!userName)
   }
 
   ngOnInit() {
   }
 
-  onLanguageSelect({ value: language }) {
-    this.store.dispatch(actionSettingsChangeLanguage({ language }));
-  }
-
   onLogoutClick() {
-    this.localStorageSvc.removeItem('E-ID');
-    this.localStorageSvc.removeItem('USER');
-    // TODO remove token for web
-    this.router.navigate(['login']);
+    this.localStorageSvc.removeItem('USER')
+    this.localStorageSvc.removeItem('TOKEN')
+    this.router.navigate(['login'])
   }
 }
 

@@ -12,8 +12,8 @@ import { Quote} from '../model/quote';
   providedIn: 'root'
 })
 export class QuoteWebService implements IService<Quote, QuoteItem>  {
-  readonly QUOTE_URL = `${ENVIRONMENT.api}/quotes`
-  readonly QUOTE_ITEM_URL = `${ENVIRONMENT.api}/quote-items`
+  readonly QUOTE_URL = `${ENVIRONMENT.apiBaseUrl}/quotes`
+  readonly QUOTE_ITEM_URL = `${ENVIRONMENT.apiBaseUrl}/quote-items`
 
   constructor(public http: HttpClient) {}
 
@@ -30,28 +30,6 @@ export class QuoteWebService implements IService<Quote, QuoteItem>  {
       {
         params: params
       });
-      // .pipe(map(result => {
-      // let row = [] as any
-      //
-      // const page = {
-      //   number: result.number,
-      //   size: result.size,
-      //   totalElements: result.totalElements
-      // } as Page<Quote>
-
-      // if (result && result.content) {
-      //   result.content.forEach((item) => {
-      //     const vm = {} as Quote
-      //     vm.model = item
-      //     vm.items = new ItemDatasource({id: ''},
-      //       (id) => this.getItems(id))
-      //     row.push(vm)
-      //     row.push({detailRow: true, detail: vm})
-      //   })
-      // }
-      // page.content = row
-    //   return page
-    // }))
   }
 
   delete(model: Quote): Observable<boolean> {
@@ -61,7 +39,7 @@ export class QuoteWebService implements IService<Quote, QuoteItem>  {
   add(model: Quote): Observable<Quote> {
     const copy = (JSON.parse(JSON.stringify(model)));
     copy.customerId = model.customer.id;
-    copy.createdBy = model.user.id;
+    copy.createdBy = model.account.id;
     delete copy.customer;
     delete copy.user;
     return this.http.post<Quote>(this.QUOTE_URL + '/' + model.id, copy)

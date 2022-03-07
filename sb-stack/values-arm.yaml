@@ -1,3 +1,0 @@
-db:
-  image:
-    repository: nfs.my.home:5000/sm-db-arm64

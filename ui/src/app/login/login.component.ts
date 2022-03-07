@@ -21,9 +21,9 @@ export class LoginComponent implements OnInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
 
   form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required]],
     password: ['', [Validators.required]],
-  });
+  })
 
   constructor(
     private router: Router,
@@ -40,10 +40,10 @@ export class LoginComponent implements OnInit {
     if (this.form.valid) {
       this.authService.login(this.form.value)
         .subscribe((result: any) => {
-          const decoded = jwt_decode(result.token);
-          this.localStorageSvc.setItem('USER', decoded);
-          this.localStorageSvc.setItem('TOKEN', result.token);
-          this.router.navigate(['business']);
+          const decoded = jwt_decode(result.token)
+          this.localStorageSvc.setItem('USER', decoded)
+          this.localStorageSvc.setItem('TOKEN', result.token)
+          this.router.navigate(['business'])
         })
     }
   }
