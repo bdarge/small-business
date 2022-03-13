@@ -14,23 +14,21 @@ import {FontAwesomeIconsModule} from '../../shared/font.awesome.icons.module';
 
 
 @NgModule({
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [
-    OrderComponent,
-    CustomerComponent,
-    EditOrderComponent,
-    EditCustomerComponent,
-    EditOrderItemComponent,
-    QuoteComponent,
-    EditQuoteComponent,
-    EditQuoteItemComponent,
-  ],
-  imports: [
-    SharedModule,
-    HomeRoutingModule,
-    FontAwesomeIconsModule
-  ],
-  entryComponents: [EditOrderComponent, EditCustomerComponent,
-    EditOrderItemComponent, EditQuoteComponent, EditQuoteItemComponent]
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [
+        OrderComponent,
+        CustomerComponent,
+        EditOrderComponent,
+        EditCustomerComponent,
+        EditOrderItemComponent,
+        QuoteComponent,
+        EditQuoteComponent,
+        EditQuoteItemComponent,
+    ],
+    imports: [
+        SharedModule,
+        HomeRoutingModule,
+        FontAwesomeIconsModule
+    ]
 })
 export class HomeModule { }
