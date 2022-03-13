@@ -1,5 +1,5 @@
 import {Customer} from './customer';
-import {Account} from "./account";
+import {Account} from './account';
 
 export interface Transaction {
   id: string;

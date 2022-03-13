@@ -10,8 +10,8 @@ import {
 import { Store} from '@ngrx/store'
 import { Router} from '@angular/router'
 import { AuthWebService} from '../http/auth-web.service'
-import Validation from "../core/validators/validators"
-import {SBErrorStateMatcher} from "../core/validators/error-state-matcher"
+import Validation from '../core/validators/validators'
+import {SBErrorStateMatcher} from '../core/validators/error-state-matcher'
 
 @Component({
   selector: 'app-register',
