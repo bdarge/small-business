@@ -22,7 +22,7 @@ jobs:
     container: buildkite/puppeteer:latest
     strategy:
       matrix:
-        node-version: [15.x]
+        node-version: [16.x]
         
     defaults:
       run:
