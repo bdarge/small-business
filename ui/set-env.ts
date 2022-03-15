@@ -1,6 +1,6 @@
 import { writeFile } from 'fs/promises'
 import chalk from 'chalk'
-import dotenv from "dotenv"
+import dotenv from 'dotenv'
 
 dotenv.config()
 
@@ -13,7 +13,7 @@ async function load() {
 
   // Configure Angular `environment.ts` file path
   let targetPath = './src/environments/environment.dev.ts'
-  let isProduction = process.env.NODE_ENV === 'PROD'
+  const isProduction = process.env.NODE_ENV === 'PROD'
   if (isProduction) {
     targetPath = './src/environments/environment.prod.ts'
   }

@@ -41,7 +41,7 @@ export class BusinessComponent implements OnInit {
   ) {
     this.theme$ = this.store.pipe(select(selectTheme))
     const acct = this.localStorageSvc.getItem('USER') as Account
-    let userName: string = acct?.email
+    const userName: string = acct?.email
     this.user$ = of(userName)
     this.isAuthenticated$ = of(!!userName)
   }

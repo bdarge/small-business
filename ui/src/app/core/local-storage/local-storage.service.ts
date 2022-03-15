@@ -42,10 +42,18 @@ export class LocalStorageService {
     localStorage.setItem(`${APP_PREFIX}${key}`, JSON.stringify(value));
   }
 
+  /**
+   * get item from local storage
+   * @param key
+   */
   getItem(key: string) {
     return JSON.parse(localStorage.getItem(`${APP_PREFIX}${key}`));
   }
 
+  /**
+   * remove item from local storage
+   * @param key
+   */
   removeItem(key: string) {
     localStorage.removeItem(`${APP_PREFIX}${key}`);
   }

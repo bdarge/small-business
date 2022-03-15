@@ -15,7 +15,7 @@ export const metaReducers: MetaReducer<AppState>[] = [
   initStateFromLocalStorage
 ];
 
-export const selectSettingsState = createFeatureSelector<AppState, SettingsState>('settings');
+export const selectSettingsState = createFeatureSelector< SettingsState>('settings');
 
 export interface AppState {
   settings: SettingsState;

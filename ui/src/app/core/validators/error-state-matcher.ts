@@ -1,6 +1,5 @@
-import {ErrorStateMatcher} from "@angular/material/core"
-import {FormControl, FormGroupDirective, NgForm} from "@angular/forms"
-import {of} from "rxjs"
+import {ErrorStateMatcher} from '@angular/material/core'
+import {FormControl, FormGroupDirective, NgForm} from '@angular/forms'
 
 export class SBErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
