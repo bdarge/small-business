@@ -11,19 +11,29 @@ import {LocalStorageService} from '../../core/local-storage/local-storage.servic
 import {of} from 'rxjs';
 import {User} from '../../model/user';
 import {ConfigWebService} from '../../http/config-web.service';
+import { Account } from '../../model/account';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let getUserSpy;
+  let getItemSpy;
 
   beforeEach(waitForAsync(() => {
     const user  = {
-      id: 'id',
-      email: 'test@email.com'
+      id: 'id'
     } as User
-    const configService = jasmine.createSpyObj('ConfigWebService', ['getUser']);
-    getUserSpy = configService.getUser.and.returnValue(of(user));
+
+    const account  = {
+      id: 'id',
+      email: 'em@gmail.com'
+    } as Account
+
+    const localStorageSvcStub = jasmine.createSpyObj('LocalStorageService', ['getItem']);
+    getItemSpy = localStorageSvcStub.getItem.and.returnValue(account)
+
+    const configServiceStub = jasmine.createSpyObj('ConfigWebService', ['getUser']);
+    getUserSpy = configServiceStub.getUser.and.returnValue(of(user))
 
     TestBed.configureTestingModule({
       imports: [
@@ -39,10 +49,10 @@ describe('ProfileComponent', () => {
           provide: NotificationService
         },
         {
-          provide: LocalStorageService
+          provide: LocalStorageService, useValue: localStorageSvcStub
         },
         {
-          provide: ConfigWebService
+          provide: ConfigWebService, useValue: configServiceStub
         },
         {
           provide: MatDialog

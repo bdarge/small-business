@@ -34,6 +34,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     const acct = this.localStorageSvc.getItem('USER')
+    console.log(acct)
     this.configService.getUser(acct.userId)
       .subscribe(form => {
         if (form) {
