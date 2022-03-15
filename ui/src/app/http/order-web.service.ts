@@ -10,8 +10,8 @@ import { Order} from '../model/order';
 
 @Injectable()
 export class OrderWebService implements IService<Order, OrderItem> {
-  readonly ORDER_URL = `${ENVIRONMENT.api}/orders`
-  readonly ORDER_ITEM_URL = `${ENVIRONMENT.api}/order-items`
+  readonly ORDER_URL = `${ENVIRONMENT.apiBaseUrl}/orders`
+  readonly ORDER_ITEM_URL = `${ENVIRONMENT.apiBaseUrl}/order-items`
 
   constructor(public http: HttpClient) {
   }
@@ -42,7 +42,7 @@ export class OrderWebService implements IService<Order, OrderItem> {
   add(order:Order): Observable<Order> {
     const copy = (JSON.parse(JSON.stringify(order)));
     copy.customerId = order.customer.id;
-    copy.createdBy = order.user.id;
+    copy.createdBy = order.account.id;
     delete copy.customer;
     delete copy.user;
     return this.http.post<Order>(this.ORDER_URL, copy);

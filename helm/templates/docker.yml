@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "sb.name" . }}-registrey
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: {{ template "imagePullSecret" . }}

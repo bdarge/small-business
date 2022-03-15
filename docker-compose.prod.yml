@@ -1,14 +1,25 @@
-version: "3.9"
+version: "3.8"
 
 services:
   api:
     build:
-      context: sm-api
+      context: api
       dockerfile: Dockerfile
       target: prod
     volumes:
-      - ./config:/app/config
-      - ./db:/app/db
+      - ./api/config:/app/config
+      - ./api/db:/app/db
+    environment:
+      GIN_MODE: release
+      PATH_TO_CONFIG: /app/config
+  migrator:
+    build:
+      context: api
+      dockerfile: Dockerfile
+      target: prod
+    volumes:
+      - ./api/config:/app/config
+      - ./api/db:/app/db
     environment:
       GIN_MODE: release
       PATH_TO_CONFIG: /app/config
@@ -17,5 +28,10 @@ services:
       context: ./ui
       dockerfile: docker/Dockerfile
       target: prod
+      args:
+        - NODE_ENV=PROD
+        - API_BASE_URL=http://127.0.0.1:8080/v1
+    environment:
+      NODE_ENV: PROD
     ports:
       - "8082:80"

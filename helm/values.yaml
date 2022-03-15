@@ -1,0 +1,129 @@
+nameOverride: ""
+fullnameOverride: ""
+rbac:
+  # Specifies whether RBAC resources should be created
+  create: true
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+ingress:
+  enabled: true
+  annotations:
+#     kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  hosts:
+    - host: sb-info.my.home
+      paths:
+        - "/"
+        - "/api"
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+imagePullSecrets:
+  - name: "sb-registry-key"
+
+imageCredentials:
+  registry: https://nfs.my.home:5000
+  email: bin.darge@gmail.com
+
+db:
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+  securityContext: {}
+  replicaCount: 1
+  image:
+    repository: nfs.my.home:5000/bdarge/sb-db
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  service:
+    type: ClusterIP
+    port: 3308
+    targetPort: 3306
+  cred:
+  iscsiChap:
+    username: initiator
+    usernameIn: target
+  profile:
+    user: docker
+    database: profile
+  migration: "small-business/api/db/migrations"
+
+api:
+  autoscaling:
+    enabled: false
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 8080
+    targetPort: 8080
+  baseUrl: "http://sb-info.my.home/api/"
+  key: "exp"
+  image:
+    repository: nfs.my.home:5000/bdarge/sb-api
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  env:
+    dev: "sm.yaml"
+
+ui:
+  image:
+    repository: nfs.my.home:5000/bdarge/sb-ui
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "0.0.1"
+  service:
+    type: ClusterIP
+    port: 8081
+    targetPort: 80
+
+migration:
+  image:
+    repository: nfs.my.home:5000/bdarge/sb-api
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  job:
+    restartPolicy: Never
+  path: "db"
+  gitUrl: "github.com/bdarge/small-business.git"
+  branch: main
+
+wait:
+  image:
+    repository: nfs.my.home:5000/k8s-wait-for
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+
+git:
+  username: bdarge

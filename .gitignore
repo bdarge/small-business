@@ -7,3 +7,5 @@
 *.iml
 out
 gen
+*.yaml.dec
+.DS_store

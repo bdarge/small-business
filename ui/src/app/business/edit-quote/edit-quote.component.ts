@@ -25,8 +25,8 @@ export class EditQuoteComponent implements OnInit {
   public filterCtrl: FormControl = new FormControl();
   public searching = false;
   public filteredCustomers: ReplaySubject<Customer[]> = new ReplaySubject<Customer[]>(1)
+  private _onDestroy = new Subject<void>()
 
-  private _onDestroy = new Subject<void>();
   constructor(
     private fb: FormBuilder,
     public snackBar: MatSnackBar,
@@ -48,11 +48,19 @@ export class EditQuoteComponent implements OnInit {
       description: [description, Validators.required],
       customer: [customer, Validators.required],
       quoteSummary: [quoteSummary]
-    });
+    })
 
     if(customer) {
       this.filteredCustomers.next([customer])
     }
+  }
+
+  get quoteDetails (){
+    return this.form.get('quoteDetails') as FormArray;
+  }
+
+  get quoteSummary (){
+    return this.form.get('quoteSummary') as FormArray;
   }
 
   createQuoteDetail(quoteDetails): FormGroup[] {
@@ -77,14 +85,6 @@ export class EditQuoteComponent implements OnInit {
         this.searching = false
         next.subscribe(this.filteredCustomers)
       })
-  }
-
-  get quoteDetails (){
-    return this.form.get('quoteDetails') as FormArray;
-  }
-
-  get quoteSummary (){
-    return this.form.get('quoteSummary') as FormArray;
   }
 
   compareObjects(o1: any, o2: any): boolean {

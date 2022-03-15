@@ -6,14 +6,19 @@ import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class ConfigWebService{
-  readonly USER_URL = `${ENVIRONMENT.api}/users`
+  readonly USER_URL = `${ENVIRONMENT.apiBaseUrl}/users`
+  readonly ACCOUNT_URL = `${ENVIRONMENT.apiBaseUrl}/accounts`
   constructor(public http: HttpClient) {}
 
   getUser(id: string): Observable<User> {
-    return this.http.get<User>(this.USER_URL + '/id/:' + id)
+    return this.http.get<User>(this.USER_URL + '/' + id)
+  }
+
+  getUserByAcctId(id: string): Observable<User> {
+    return this.http.get<User>(this.ACCOUNT_URL + '/' + id + '/user')
   }
 
   saveUser(user: User): Observable<User> {
-    return this.http.post<User>(this.USER_URL, user)
+    return this.http.patch<User>(this.USER_URL+ '/' + user.id, user)
   }
 }

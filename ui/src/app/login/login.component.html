@@ -7,13 +7,11 @@
         <form [formGroup]="form" (ngSubmit)="submit()">
           <div class="row">
             <mat-form-field class="col" [ngClass]="routeAnimationsElements">
-              <input matInput placeholder="{{ 'business.login.email.placeholder' | translate }}"
-                     formControlName="email" type="email">
-              <mat-error *ngIf="form.get('email').hasError('required')">
-                {{ 'business.login.email.error1' | translate }}
+              <input matInput placeholder="{{ 'business.login.user.placeholder' | translate }}"
+                     formControlName="username">
+              <mat-error *ngIf="form.get('username').hasError('required')">
+                {{ 'business.login.user.error' | translate }}
               </mat-error>
-              <mat-error *ngIf="form.get('email').hasError('email')">
-                {{ 'business.login.email.error2' | translate }}</mat-error>
             </mat-form-field>
           </div>
           <div class="row">

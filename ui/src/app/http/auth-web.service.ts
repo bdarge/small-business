@@ -8,17 +8,18 @@ import {User} from '../model/user';
   providedIn: 'root'
 })
 export class AuthWebService {
-  readonly AUTH_URL = `${ENVIRONMENT.api}/auth/`
+  readonly AUTH_URL = `${ENVIRONMENT.apiBaseUrl}/`
   constructor(private http: HttpClient) {
   }
 
-  login({email, password}) {
-    const file = {username: email, password}
+  login({username, password}) {
+    const file = {username: username, password}
     const options = {headers: {'Content-Type': 'application/json'}}
-    return this.http.post(this.AUTH_URL + 'login', JSON.stringify(file), options)
+    return this.http.post(this.AUTH_URL + 'auth/login', JSON.stringify(file), options)
   }
 
   register(value: any): Observable<User> {
-    return this.http.post<User>(this.AUTH_URL + 'register', JSON.stringify(value));
+    const options = {headers: {'Content-Type': 'application/json'}}
+    return this.http.post<User>(this.AUTH_URL + 'accounts', JSON.stringify(value), options)
   }
 }

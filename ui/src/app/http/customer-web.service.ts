@@ -10,7 +10,7 @@ import { PageRequest, Page, Query} from 'app/model/page';
   providedIn: 'root'
 })
 export class CustomerWebService implements ICustomerService {
-  readonly CUSTOMER_URL = `${ENVIRONMENT.api}/customers`
+  readonly CUSTOMER_URL = `${ENVIRONMENT.apiBaseUrl}/customers`
 
   constructor(private http: HttpClient) {}
 

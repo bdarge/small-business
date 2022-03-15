@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sb.fullname" . }}-config
+  annotations:
+    "kubernetes.io/service-account.name": {{ include "sb.serviceAccountName" . }}
+data:
+  sm.yaml: |
+    ---
+    DSN: "{{ .Values.db.profile.user}}:password!@tcp({{ include "sb.fullname" . }}-db-svc:{{ .Values.db.service.port }})/{{ .Values.db.profile.database }}?parseTime=true"
+    API_KEY: {{ .Values.api.key | quote }}
+    BASE_URL: {{ .Values.api.baseUrl | quote }}
+    SERVER_PORT: {{ .Values.api.service.targetPort }}
+    MIGRATION_DIR: {{ .Values.db.migration | quote }}
+    DATABASE: {{ .Values.db.profile.database | quote }}

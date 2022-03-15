@@ -1,6 +1,5 @@
 # Multi-stage
-
-FROM node:15 AS dev
+FROM node:16 AS dev
 WORKDIR /app
 COPY package*.json /app/
 RUN npm i @angular/cli@latest -g
@@ -11,9 +10,14 @@ CMD ["ng","serve","--host", "0.0.0.0"]
 # 2) nginx stage to serve frontend assets
 
 # Name the node stage "builder"
-FROM node:15 AS builder
+FROM node:16 AS builder
+ARG NODE_ENV
+ARG API_BASE_URL
 # Set working directory
 WORKDIR /app
+# skip chromium download
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH="`which chromium`"
 # Copy all files from current directory to working dir in image
 COPY .. .
 # install node modules and build assets

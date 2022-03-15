@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sb-ingress
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: sb-ui-svc
+      port:
+        number: 8081
+  rules:
+  - host: sb.info
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: sb-api-svc
+            port:
+              number: 8080
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: sb-ui-svc
+            port:
+              number: 8081
