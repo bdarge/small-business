@@ -8,7 +8,9 @@ env:
   USER: darge
   REGISTRY: registry.gitlab.com/d6908/k8s
   IMAGE_NAME: sb-ui
-
+  SB_API_BASE_URL: http://sb-info.my.home/api/v1
+  ENV: PROD
+   
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
@@ -45,5 +47,6 @@ jobs:
           context: ui
           push: true
           platforms: linux/arm64
+          build-args: API_BASE_URL=${{ SB_API_BASE_URL }},NODE_ENV=${{ ENV }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
