@@ -6,7 +6,7 @@ on:
 
 env:
   USER: darge
-  REGISTRY: https://registry.gitlab.com/d6908/k8s
+  REGISTRY: registry.gitlab.com/d6908/k8s
   IMAGE_NAME: sb-ui
 
 jobs:
