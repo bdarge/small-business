@@ -101,7 +101,7 @@ ui:
     repository: nfs.my.home:5000/bdarge/sb-ui
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "0.0.1"
+    tag: "latest"
   service:
     type: ClusterIP
     port: 8081
