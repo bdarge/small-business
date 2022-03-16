@@ -9,7 +9,7 @@ DB_IMG        := ${DB_NAME}:$(TAG)
 DB_LATEST     := nfs.my.home:5000/${DB_NAME}:latest
 
 UI_NAME       := bdarge/sb-ui
-UI_IMG        := ${DB_NAME}:${TAG}
+UI_IMG        := ${UI_NAME}:${TAG}
 UI_LATEST     := nfs.my.home:5000/${UI_NAME}:latest
 
 API_NAME       := bdarge/sb-api
