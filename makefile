@@ -9,13 +9,13 @@ DB_IMG        := ${DB_NAME}:$(TAG)
 DB_LATEST     := nfs.my.home:5000/${DB_NAME}:latest
 
 UI_NAME       := bdarge/sb-ui
-UI_IMG        := ${DB_NAME}:${TAG}
+UI_IMG        := ${UI_NAME}:${TAG}
 UI_LATEST     := nfs.my.home:5000/${UI_NAME}:latest
+API_BASE_URL   := http://sb-info.my.home/api/v1
 
 API_NAME       := bdarge/sb-api
 API_IMG        := ${API_NAME}:${TAG}
 API_LATEST     := nfs.my.home:5000/${API_NAME}:latest
-API_BASE_URL   := http://sb-info.my.home/api/v1
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -57,7 +57,8 @@ destroy: ## destroy running containers and volumes (docker compose)
 build: k_ui_arm k_api_arm k_db_arm ## build images for local k8s
 
 k_ui_arm: ## build ui image for for local k8s
-	cd ui; docker buildx b -f docker/Dockerfile-arm64 --platform linux/arm64 --target prod --load -t ${UI_IMG} .; cd ..
+	cd ui; docker buildx b -f docker/Dockerfile-arm64 --platform linux/arm64 --target prod \
+    --load --build-arg API_BASE_URL=${API_BASE_URL} --build-arg NODE_ENV=PROD -t ${UI_IMG} .; cd ..
 	docker image tag ${UI_IMG} ${UI_LATEST}
 
 api_doc: ## create api doc
@@ -65,7 +66,7 @@ api_doc: ## create api doc
 
 k_api_arm: api_doc ## build api image for for local k8s
 	cd api; docker buildx b --platform linux/arm64 --target prod \
-	--build-arg NODE_ENV=PROD --build-arg API_BASE_URL=${API_BASE_URL} --load -t ${API_IMG} .; cd ..
+	--build-arg NODE_ENV=PROD --load -t ${API_IMG} .; cd ..
 	docker image tag ${API_IMG} ${API_LATEST}
 
 k_db_arm: ## build db image for for local k8s

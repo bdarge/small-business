@@ -1,5 +1,0 @@
-ConfigVar: "Dummy Value"
-DSN: "docker:password!@tcp(db)/profile?parseTime=true"
-API_KEY: "key"
-BASE_URL: "http://localhost:8080"
-SERVER_PORT: 8080
