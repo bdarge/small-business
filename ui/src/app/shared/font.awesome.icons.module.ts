@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faAngleDown, faUnlock,
@@ -19,34 +20,34 @@ import {
 export class FontAwesomeIconsModule {
   constructor(library: FaIconLibrary) {
     library.addIcons(
-      faBars,
-      faUserCircle,
-      faPowerOff,
-      faCog,
-      faRocket,
-      faPlayCircle,
-      faPlus,
-      faEdit,
-      faTrash,
-      faTimes,
-      faCaretUp,
-      faCaretDown,
-      faExclamationTriangle,
-      faFilter,
-      faTasks,
-      faCheck,
-      faSquare,
-      faLanguage,
-      faPaintBrush,
-      faLightbulb,
-      faWindowMaximize,
-      faStream,
-      faBook,
-      faAngleUp,
-      faAngleDown,
-      faTrash,
-      faLock,
-      faUnlock
+      faBars as IconDefinition,
+      faUserCircle as IconDefinition,
+      faPowerOff as IconDefinition,
+      faCog as IconDefinition,
+      faRocket as IconDefinition,
+      faPlayCircle as IconDefinition,
+      faPlus as IconDefinition,
+      faEdit as IconDefinition,
+      faTrash as IconDefinition,
+      faTimes as IconDefinition,
+      faCaretUp as IconDefinition,
+      faCaretDown as IconDefinition,
+      faExclamationTriangle as IconDefinition,
+      faFilter as IconDefinition,
+      faTasks as IconDefinition,
+      faCheck as IconDefinition,
+      faSquare as IconDefinition,
+      faLanguage as IconDefinition,
+      faPaintBrush as IconDefinition,
+      faLightbulb as IconDefinition,
+      faWindowMaximize as IconDefinition,
+      faStream as IconDefinition,
+      faBook as IconDefinition,
+      faAngleUp as IconDefinition,
+      faAngleDown as IconDefinition,
+      faTrash as IconDefinition,
+      faLock as IconDefinition,
+      faUnlock as IconDefinition
     )
   }
 }

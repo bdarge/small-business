@@ -25,6 +25,7 @@ import {
   FaIconLibrary,
   FontAwesomeModule
 } from '@fortawesome/angular-fontawesome';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
@@ -134,8 +135,8 @@ export class CoreModule {
       throw new Error('CoreModule is already loaded. Import only in AppModule');
     }
     faIconLibrary.addIcons(
-      faCog,
-      faBars
+      faCog as IconDefinition,
+      faBars as IconDefinition
     );
   }
 }
