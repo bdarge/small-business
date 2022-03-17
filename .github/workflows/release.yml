@@ -41,13 +41,13 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - run: ls -al
+      - run: ls -al ui/docker
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
           context: ui
-          file: docker/Dockerfile-arm64
+          file: ui/docker/Dockerfile-arm64
           push: true
           platforms: linux/arm64
           build-args: API_BASE_URL=${{ env.SB_API_BASE_URL }},NODE_ENV=${{ env.ENV }}
