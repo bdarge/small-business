@@ -41,7 +41,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: "{{defaultContext}}:ui"
+          context: ui
           push: true
           platforms: linux/arm64
           build-args: API_BASE_URL=${{ env.SB_API_BASE_URL }},NODE_ENV=${{ env.ENV }}
