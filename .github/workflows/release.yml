@@ -47,6 +47,6 @@ jobs:
           context: ui
           push: true
           platforms: linux/arm64
-          build-args: API_BASE_URL=${{ SB_API_BASE_URL }},NODE_ENV=${{ ENV }}
+          build-args: API_BASE_URL=${{ env.SB_API_BASE_URL }},NODE_ENV=${{ env.ENV }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
