@@ -34,15 +34,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.GL_REGISTRY }}
-        
-      - name: install swag
-        run: go get -u github.com/swaggo/swag/cmd/swag
-        
-      - name: check sawg
-        run: swag -v
-
-      - name: build doc
-        run: make api_doc
  
       - name: Build & Push Docker Images
         env:
