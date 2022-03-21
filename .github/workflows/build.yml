@@ -34,6 +34,15 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.GL_REGISTRY }}
+          
+      - name: go
+        run: go version
+        
+      - name: install swag
+        run: go install github.com/swaggo/swag/cmd/swag@latest
+        
+      - name: check sawg
+        run: swag -v
 
       - name: build doc
         run: make api_doc
