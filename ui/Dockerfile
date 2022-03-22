@@ -28,12 +28,25 @@ ENV PUPPETEER_EXECUTABLE_PATH="`which chromium`"
 COPY .. .
 
 # install node modules and build assets
-RUN npm i
-
-RUN npm run build:prod
+RUN npm i && npm run build:prod
 
 # nginx state for serving content
-FROM arm64v8/nginx AS prod
+FROM nginx:alpine AS prod
+
+# Set working directory to nginx asset directory
+WORKDIR /usr/share/nginx/html
+
+# Remove default nginx static assets
+RUN rm -rf ./*
+
+# Copy static assets from builder stage
+COPY --from=builder /app/dist .
+
+# Containers run nginx with global directives and daemon off
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
+
+# nginx state for serving content
+FROM arm64v8/nginx AS prod_arm
 
 # Set working directory to nginx asset directory
 WORKDIR /usr/share/nginx/html

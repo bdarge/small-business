@@ -4,7 +4,6 @@ services:
   db:
     build:
       context: db
-      dockerfile: Dockerfile
     image: sm-db
     cap_add:
       - SYS_NICE
@@ -27,7 +26,6 @@ services:
       - db
     build:
       context: api
-      dockerfile: Dockerfile
       target: dev
     volumes:
       - ./api:/home/app
@@ -59,7 +57,6 @@ services:
     image: sm-ui
     build:
       context: ./ui
-      dockerfile: docker/Dockerfile
       target: dev
     ports:
       - "4201:4200"

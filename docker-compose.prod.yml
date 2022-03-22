@@ -4,7 +4,6 @@ services:
   api:
     build:
       context: api
-      dockerfile: Dockerfile
       target: prod
     volumes:
       - ./api/config:/app/config
@@ -15,7 +14,6 @@ services:
   migrator:
     build:
       context: api
-      dockerfile: Dockerfile
       target: prod
     volumes:
       - ./api/config:/app/config
@@ -26,7 +24,6 @@ services:
   ui:
     build:
       context: ./ui
-      dockerfile: docker/Dockerfile
       target: prod
       args:
         - NODE_ENV=PROD

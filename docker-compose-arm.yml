@@ -4,8 +4,6 @@ services:
   db:
     platform: linux/arm64
     image: sm-db-arm64
-    build:
-      dockerfile: Dockerfile-mariadb
   api:
     image: sm-api-arm64
     platform: linux/arm64
