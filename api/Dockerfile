@@ -12,7 +12,7 @@ ADD cmd cmd
 
 RUN ["go", "install", "github.com/swaggo/swag/cmd/swag@latest"]
 
-RUN cd cmd/sm && swag && cd -
+RUN cd cmd/sm && swag init && cd -
 
 RUN go build -o ./out cmd/sm/main.go
 
