@@ -69,5 +69,5 @@ jobs:
 
       - name: Build & Push Docker Images
         env:
-          DOCKERHUB_OWNER: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_OWNER: ${{ env.REGISTRY }}
         run: make build
