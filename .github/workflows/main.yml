@@ -11,7 +11,6 @@ on:
 
 env:
   REGISTRY: registry.gitlab.com/d6908/k8s
-  IMAGE_NAME: sb-ui
   SB_API_BASE_URL: http://sb-info.my.home/api/v1
   ENV: PROD
 

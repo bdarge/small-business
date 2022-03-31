@@ -4,8 +4,8 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-GIT_SHA1 		= $(shell git rev-parse --verify HEAD)
-IMAGES_TAG 		= ${shell git describe --exact-match --tags 2> /dev/null || echo 'latest'}
+GIT_SHA1 		    = $(shell git rev-parse --verify HEAD)
+IMAGES_TAG 		    = ${shell git describe --exact-match --tags 2> /dev/null || echo 'latest'}
 IMAGE_PREFIX 		= sb-
 
 IMAGE_DIRS = $(wildcard db api ui)
@@ -24,7 +24,7 @@ ifeq ($@, 'ui')
 	docker buildx b -t ${DOCKERHUB_OWNER}/${IMAGE_PREFIX}${IMAGE_NAME}:${IMAGES_TAG} \
 	-t ${DOCKERHUB_OWNER}/${IMAGE_PREFIX}${IMAGE_NAME}:latest \
 	--platform linux/arm64 --target prod_arm \
-    --load --build-arg API_BASE_URL=${SB_API_BASE_URL} --build-arg NODE_ENV=PROD \
+    --load --build-arg API_BASE_URL=${SB_API_BASE_URL} --build-arg NODE_ENV=${ENV} \
     --build-arg TAG=${IMAGE_PREFIX}${IMAGE_NAME} --build-arg GIT_SHA1=${GIT_SHA1} $@
 else
 	docker buildx b -t ${DOCKERHUB_OWNER}/${IMAGE_PREFIX}${IMAGE_NAME}:${IMAGES_TAG} \
