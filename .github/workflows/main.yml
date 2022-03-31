@@ -12,7 +12,7 @@ on:
 env:
   REGISTRY: registry.gitlab.com/d6908/k8s
   SB_API_BASE_URL: http://sb-info.my.home/api/v1
-  ENV: PROD
+  NODE_ENV: PROD
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -66,4 +66,6 @@ jobs:
       - name: Build & Push Docker Images
         env:
           DOCKERHUB_OWNER: ${{ env.REGISTRY }}
+          NODE_ENV: ${{ env.NODE_ENV }}
+          API_BASE_URL: ${{ env.SB_API_BASE_URL }}
         run: make build
