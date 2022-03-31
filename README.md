@@ -15,7 +15,7 @@ make build
 
 My registry is gitlab. I deployed the apps via helm into my local kube cluster which is set up on raspberry pi.
 ```console
-  helm secrets install sb ./helm -f ./helm/helm_vars/secrets-all.yaml -f ./helm/values-arm-test.yaml
+  helm secrets install sb ./helm -f ./helm/helm_vars/secrets.yaml -f ./helm/values-arm-test.yaml
 ```
 - To uninstall
 ```console

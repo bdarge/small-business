@@ -47,11 +47,10 @@ tolerations: []
 affinity: {}
 
 imagePullSecrets:
-  - name: "sb-registry-key"
+  - name: "sb-registry"
 
 imageCredentials:
-  registry: https://nfs.my.home:5000
-  email: bin.darge@gmail.com
+  registry: registry.gitlab.com
 
 db:
   autoscaling:
@@ -62,7 +61,7 @@ db:
   securityContext: {}
   replicaCount: 1
   image:
-    repository: nfs.my.home:5000/bdarge/sb-db
+    repository: registry.gitlab.com/d6908/k8s/sb-db
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: "latest"
@@ -90,7 +89,7 @@ api:
   baseUrl: "http://sb-info.my.home/api/"
   key: "exp"
   image:
-    repository: nfs.my.home:5000/bdarge/sb-api
+    repository: registry.gitlab.com/d6908/k8s/sb-api
     pullPolicy: IfNotPresent
     tag: "latest"
   env:
@@ -98,7 +97,7 @@ api:
 
 ui:
   image:
-    repository: nfs.my.home:5000/bdarge/sb-ui
+    repository: registry.gitlab.com/d6908/k8s/sb-ui
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: "latest"
@@ -109,7 +108,7 @@ ui:
 
 migration:
   image:
-    repository: nfs.my.home:5000/bdarge/sb-api
+    repository: registry.gitlab.com/d6908/k8s/sb-api
     pullPolicy: IfNotPresent
     tag: "latest"
   job:
