@@ -9,12 +9,9 @@ on:
 
   workflow_dispatch:
 
-env:
-  REGISTRY: registry.gitlab.com/d6908/k8s
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
+  test:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     container: buildkite/puppeteer:latest
