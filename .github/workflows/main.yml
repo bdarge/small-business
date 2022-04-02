@@ -11,7 +11,8 @@ on:
 
 env:
   REGISTRY: registry.gitlab.com/d6908/k8s
-
+  SB_API_BASE_URL: http://sb-info.my.home/api/v1
+  NODE_ENV: PROD
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   test:
@@ -36,6 +37,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run test
+      - run: env
 
   build-and-push-image:
     if: github.event_name == 'push'
@@ -62,7 +64,4 @@ jobs:
           password: ${{ secrets.GL_REGISTRY }}
 
       - name: Build & Push Docker Images
-        env:
-          SB_API_BASE_URL: http://sb-info.my.home/api/v1
-          NODE_ENV: PROD
         run: make build
