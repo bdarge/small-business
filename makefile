@@ -20,17 +20,17 @@ build: ${IMAGE_DIRS} ## build images and push to gitlab container registry
 ${IMAGE_DIRS}:
 	$(eval IMAGE_NAME := $@)
 
-ifeq ($@, 'ui')
-	docker buildx b -t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:${IMAGES_TAG} \
-	-t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:latest \
-	--platform linux/arm64 --target prod_arm \
-    --load --build-arg API_BASE_URL=${SB_API_BASE_URL} --build-arg NODE_ENV=${NODE_ENV} \
-    --build-arg TAG=${IMAGE_PREFIX}${IMAGE_NAME} --build-arg GIT_SHA1=${GIT_SHA1} --no-cache $@
-else
-	docker buildx b -t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:${IMAGES_TAG} \
-	-t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:latest \
-	--platform linux/arm64 --target prod \
-    --load --build-arg TAG=${IMAGE_PREFIX}${IMAGE_NAME} --build-arg GIT_SHA1=${GIT_SHA1} --no-cache $@
-endif
-	docker push ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:${IMAGES_TAG}
+	@if [[ "$@" == "ui" ]]; then \
+		docker buildx b -t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:${IMAGES_TAG} \
+		-t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:latest \
+		--platform linux/arm64 --target prod_arm \
+		--load --build-arg API_BASE_URL=${SB_API_BASE_URL} --build-arg NODE_ENV=${NODE_ENV} \
+		--build-arg TAG=${IMAGE_PREFIX}${IMAGE_NAME} --build-arg GIT_SHA1=${GIT_SHA1} --no-cache $@; \
+	else \
+		docker buildx b -t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:${IMAGES_TAG} \
+		-t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:latest \
+		--platform linux/arm64 --target prod \
+		--load --build-arg TAG=${IMAGE_PREFIX}${IMAGE_NAME} --build-arg GIT_SHA1=${GIT_SHA1} --no-cache $@; \
+	fi
+	docker push ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:${IMAGES_TAG}; \
     docker push ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:latest
