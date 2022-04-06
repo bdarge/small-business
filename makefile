@@ -25,7 +25,7 @@ ${IMAGE_DIRS}:
 		-t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:latest \
 		--platform linux/arm64 --target prod_arm \
 		--load --build-arg API_BASE_URL=${SB_API_BASE_URL} --build-arg NODE_ENV=${NODE_ENV} \
-		--build-arg TAG=${IMAGE_PREFIX}${IMAGE_NAME} --build-arg GIT_SHA1=${GIT_SHA1} --no-cache $@; \
+		--build-arg TAG=${IMAGE_PREFIX}${IMAGE_NAME} --build-arg GIT_SHA1=${GIT_SHA1} --no-cache --progress=plain $@; \
 	else \
 		docker buildx b -t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:${IMAGES_TAG} \
 		-t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:latest \
