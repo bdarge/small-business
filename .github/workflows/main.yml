@@ -63,7 +63,7 @@ jobs:
           password: ${{ secrets.GL_REGISTRY }}
       - name: check env
         run: |
-          $SB_API_BASE_URL
-          $NODE_ENV
+          echo $SB_API_BASE_URL
+          echo $NODE_ENV
       - name: Build & Push Docker Images
         run: make build
