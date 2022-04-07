@@ -61,9 +61,5 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.GL_REGISTRY }}
-      - name: check env
-        run: |
-          echo $SB_API_BASE_URL
-          echo $NODE_ENV
       - name: Build & Push Docker Images
         run: make build
