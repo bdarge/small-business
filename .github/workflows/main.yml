@@ -62,4 +62,4 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.GL_REGISTRY }}
       - name: Build & Push Docker Images
-        run: make build
+        run: make build SHELL='sh -x'
