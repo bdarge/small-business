@@ -9,10 +9,6 @@ on:
 
   workflow_dispatch:
 
-env:
-  REGISTRY: registry.gitlab.com/d6908/k8s
-  SB_API_BASE_URL: http://sb-info.my.home/api/v1
-  NODE_ENV: PROD
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   test:
@@ -45,7 +41,10 @@ jobs:
     permissions:
       contents: read
       packages: write
-
+    env:
+      REGISTRY: registry.gitlab.com/d6908/k8s
+      SB_API_BASE_URL: http://sb-info.my.home/api/v1
+      NODE_ENV: PROD
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -62,6 +61,9 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.GL_REGISTRY }}
-
+      - name: check env
+        run: |
+          $SB_API_BASE_URL
+          $NODE_ENV
       - name: Build & Push Docker Images
         run: make build
