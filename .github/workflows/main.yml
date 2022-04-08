@@ -72,7 +72,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ${{ CONTEXT }}
+          context: ${{ env.CONTEXT }}
           push: true
           platforms: linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
@@ -114,7 +114,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ${{ CONTEXT }}
+          context: ${{ env.CONTEXT }}
           push: true
           platforms: linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
@@ -158,7 +158,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ${{ CONTEXT }}
+          context: ${{ env.CONTEXT }}
           push: true
           platforms: linux/arm64
           build-args: API_BASE_URL=${SB_API_BASE_URL} NODE_ENV=${NODE_ENV}
