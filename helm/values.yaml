@@ -90,7 +90,7 @@ api:
   key: "exp"
   image:
     repository: registry.gitlab.com/d6908/k8s/sb-api
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     tag: "latest"
   env:
     dev: "sm.yaml"
@@ -98,8 +98,7 @@ api:
 ui:
   image:
     repository: registry.gitlab.com/d6908/k8s/sb-ui
-    pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
+    pullPolicy: Always
     tag: "latest"
   service:
     type: ClusterIP
