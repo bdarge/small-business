@@ -4,35 +4,36 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-GIT_SHA1 		    = $(shell git rev-parse --verify HEAD)
-IMAGES_TAG 		    = ${shell git describe --exact-match --tags 2> /dev/null || echo 'latest'}
-IMAGE_PREFIX 		= sb-
+dev_build: ## to build images with docker-compose in development. Pass ARM=false for none ARM os
+ifeq ($(ARM), false)
+	docker compose -f docker-compose.yml build $(c)
+else
+	docker compose -f docker-compose.yml -f docker-compose-arm.yml build $(c)
+endif
 
-IMAGE_DIRS = $(wildcard db api ui)
+build: ## build images with docker-compose. Pass ARM=false for none ARM os
+ifeq ($(ARM), false)
+	docker compose -f docker-compose.yml -f docker-compose.prod.yml build $(c)
+else
+	docker compose -f docker-compose.yml -f docker-compose-arm.yml -f docker-compose.prod.yml build $(c)
+endif
 
-# All targets are `.PHONY` ie always need to be rebuilt
-.PHONY: build ${IMAGE_DIRS}
+dev_up: ## run containers in development. Pass ARM=false for none ARM os
+ifeq ($(ARM), false)
+	docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+else
+	docker compose -f docker-compose.yml -f docker-compose-arm.yml -f docker-compose.prod.yml up -d
+endif
 
-# Build all images
-build: ${IMAGE_DIRS} ## build images and push to gitlab container registry
+up: ## run containers. Pass ARM=false for none ARM os
+ifeq ($(ARM), false)
+	docker compose -f docker-compose.yml up -d
+else
+	docker compose -f docker-compose.yml -f docker-compose-arm.yml up -d
+endif
 
-# Build and tag a single image
-${IMAGE_DIRS}:
-	$(eval IMAGE_NAME := $@)
+down: ## remove running containers (docker compose)
+	docker compose down
 
-	@if [[ "$@" == "ui" ]]; then \
-  		echo "build ui image"; \
-		docker buildx b -t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:${IMAGES_TAG} \
-		-t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:latest \
-		--platform linux/arm64 --target prod_arm \
-		--load --build-arg API_BASE_URL=${SB_API_BASE_URL} --build-arg NODE_ENV=${NODE_ENV} \
-		--build-arg TAG=${IMAGE_PREFIX}${IMAGE_NAME} --build-arg GIT_SHA1=${GIT_SHA1} --no-cache --progress=plain $@; \
-	else \
-	  	echo "build "$@" image"; \
-		docker buildx b -t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:${IMAGES_TAG} \
-		-t ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:latest \
-		--platform linux/arm64 --target prod \
-		--load --build-arg TAG=${IMAGE_PREFIX}${IMAGE_NAME} --build-arg GIT_SHA1=${GIT_SHA1} --no-cache $@; \
-	fi
-	docker push ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:${IMAGES_TAG}; \
-    docker push ${REGISTRY}/${IMAGE_PREFIX}${IMAGE_NAME}:latest
+destroy: ## destroy running containers and volumes (docker compose)
+	docker compose down -v
