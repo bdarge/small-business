@@ -7,6 +7,7 @@ dotenv.config()
 await load()
 
 async function load() {
+  console.log(chalk.grey(`ENV = ${process.env.NODE_ENV}`))
   if (!process.env.NODE_ENV) {
     return
   }
