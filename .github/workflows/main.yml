@@ -173,6 +173,6 @@ jobs:
             push: true
             platforms: linux/arm64
             target: prod_arm
-            build-args: API_BASE_URL=${{ SB_API_BASE_URL }},NODE_ENV=${{ NODE_ENV }}
+            build-args: API_BASE_URL=${{ env.SB_API_BASE_URL }},NODE_ENV=${{ env.NODE_ENV }}
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
